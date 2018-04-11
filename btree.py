@@ -10,21 +10,17 @@ class BTree:
     self.root = root or Node()
 
   def __repr__(self):
-    ret = "- [id:" + str(self.root.id) + "] "
-    ret += ", ".join(map(str, self.root.keys))
-    ret += "\n"
     BTree.VISITED = set([])
-    for child in self.root.children:
-      ret += self._repr_dfs(child)
-    return ret
+    return self._repr_dfs(self.root)
 
   def _repr_dfs(self, node, depth=0):
-    depth += 1
     ret = ""
-    ret += "  " * depth + "- [id:" + str(node.id) + "] "
+    ret += "  " * depth + "- "
     ret += ", ".join(map(str, node.keys))
+#     ret += ", ".join(map(lambda e: str(e)+':'+node.data[e], node.keys))
     ret += "\n"
     BTree.VISITED.add(node.id)
+    depth += 1
     for child in node.children:
       if not child.id in BTree.VISITED:
         ret += self._repr_dfs(child, depth)
@@ -34,25 +30,27 @@ class BTree:
 class Node:
   COUNT = 1
 
-  def __init__(self, children=None, keys=None):
+  def __init__(self, children=None, data=None):
     self.id = Node.COUNT
     self.children = children or []
-    self.keys = keys or []
+    self.data = data or {}
+    self.keys = list(data.keys())
+    self.keys.sort()
     Node.COUNT += 1
 
 
 tree = BTree(order=5, \
-  root=Node(keys=[10], children=[\
-    Node(keys=[3,6], children=[\
-      Node(keys=[0,1,2]), \
-      Node(keys=[4,5]), \
-      Node(keys=[7,8,9])\
+  root=Node(data={10: '10'}, children=[\
+    Node(data={3: '3', 6: '6'}, children=[\
+      Node(data={0: '0', 1: '1', 2: '2'}), \
+      Node(data={4: '4', 5: '5'}), \
+      Node(data={7: '7', 8: '8', 9: '9'})\
     ]), \
-    Node(keys=[14,17,21], children=[\
-      Node(keys=[11,12,13]), \
-      Node(keys=[15,16]), \
-      Node(keys=[18,19,20]), \
-      Node(keys=[22,23])\
+    Node(data={14: '14', 17: '17', 21: '21'}, children=[\
+      Node(data={11: '11', 12: '12', 13: '13'}), \
+      Node(data={15: '15', 16: '16'}), \
+      Node(data={18: '18', 19: '19', 20: '20'}), \
+      Node(data={22: '22', 23: '23'})\
     ])]))
 
 print(tree)
