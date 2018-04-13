@@ -38,6 +38,26 @@ class Node:
     self.keys.sort()
     Node.COUNT += 1
 
+  """
+  keysからxを探索する。
+  keys[i] == x となるiがあればそのiを返す。
+  そうでなければ
+  """
+  def _(self, x):
+    keysSet = set(self.keys)
+    if x in keysSet:
+      return self.keys.index(x)
+
+    l = 0
+    r = len(self.keys)
+    while l + 1 < r:
+      i = (l + r) // 2
+      if self.keys[i] <= v:
+        l = i
+      else:
+        r = i
+    return self.keys[l] == v
+
 
 tree = BTree(order=5, \
   root=Node(data={10: '10'}, children=[\
