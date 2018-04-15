@@ -26,6 +26,23 @@ class BTree:
                 ret += self._repr_dfs(child, depth)
         return ret
 
+    """
+    B木のキーからxを検索する。
+    見つかれば (True, data[x]) を返す。
+    見つからなければ、(False, None) を返す。
+    """
+    def find(self, x):
+        z = None
+        u = self.root
+        while u is not None:
+            exists, i = binary_search(u.keys, x)
+            if exists:
+                return (True, u.data[u.keys[i]])
+            if i < len(u.keys):
+                z = u.keys[i]
+            u = u.children[i] if len(u.children) > i else None
+        return (False, None)
+
 
 class Node:
     COUNT = 1
@@ -38,25 +55,26 @@ class Node:
         self.keys.sort()
         Node.COUNT += 1
 
-    """
-    keysからxを探索する。
-    keys[i] == x となるiがあればそのiを返す。
-    そうでなければ
-    """
-    def _(self, x):
-        keysSet = set(self.keys)
-        if x in keysSet:
-            return self.keys.index(x)
 
-        l = 0
-        r = len(self.keys)
-        while l + 1 < r:
-            i = (l + r) // 2
-            if self.keys[i] <= v:
-                l = i
-            else:
-                r = i
-        return self.keys[l] == v
+"""
+sorted_listからxを検索する。
+sorted_list[i] == xとなるxが見つかれば (True, i) を返す。
+見つからなければ、
+sorted_list[i] > xとなる最小のiがあれば (False, i) を返し、
+なければ (False, len(sorted_list)) を返す。
+"""
+def binary_search(sorted_list, x):
+    l = 0
+    r = len(sorted_list)
+    while l != r:
+        m = (l + r) // 2
+        if sorted_list[m] == x:
+            return (True, m)
+        if sorted_list[m] < x:
+            l = m + 1
+        else:
+            r = m
+    return (False, l)
 
 
 tree = BTree(order=5, \
@@ -74,3 +92,4 @@ tree = BTree(order=5, \
         ])]))
 
 print(tree)
+print(tree.find(9))
