@@ -33,14 +33,11 @@ class BTree:
     見つからなければ、(False, None) を返す。
     """
     def find(self, x):
-        z = None
         u = self.root
         while u is not None:
             exists, i = binary_search(u.keys, x)
             if exists:
                 return (True, u.data[u.keys[i]])
-            if i < len(u.keys):
-                z = u.keys[i]
             u = u.children[i] if len(u.children) > i else None
         return (False, None)
 
