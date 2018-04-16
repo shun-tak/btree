@@ -158,6 +158,6 @@ tree = BTree(order=4, \
         ])]))
 
 print(tree)
-print(tree.find(9))
-print(tree.add(13.5, '13.5'))
+print("Find 9:", tree.find(9))
+print("Add 13.5:", tree.add(13.5, '13.5'))
 print(tree)
